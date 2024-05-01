@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "367947652892",
+    "firebase_url": "https://data-mo-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "data-mo",
+    "storage_bucket": "data-mo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367947652892:android:dea899b1fb1e0b2b0064d9",
+        "android_client_info": {
+          "package_name": "com.mycompany.monitoring"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM2ihPecU7rk-4GX4T38D1m70ZJM2aGec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
