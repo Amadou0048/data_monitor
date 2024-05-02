@@ -39,7 +39,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'HomePage',
           path: '/homePage',
-          builder: (context, params) => const HomePageWidget(),
+          builder: (context, params) => HomePageWidget(
+            controlRef: params.getParam(
+              'controlRef',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['ESP32CONTROL'],
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

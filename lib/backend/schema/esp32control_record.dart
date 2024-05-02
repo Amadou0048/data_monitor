@@ -31,10 +31,16 @@ class Esp32controlRecord extends FirestoreRecord {
   bool get resetValue => _resetValue ?? false;
   bool hasResetValue() => _resetValue != null;
 
+  // "isMonitoring" field.
+  bool? _isMonitoring;
+  bool get isMonitoring => _isMonitoring ?? false;
+  bool hasIsMonitoring() => _isMonitoring != null;
+
   void _initializeFields() {
     _isConnected = snapshotData['isConnected'] as bool?;
     _sampleTime = castToType<int>(snapshotData['sampleTime']);
     _resetValue = snapshotData['resetValue'] as bool?;
+    _isMonitoring = snapshotData['isMonitoring'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -75,12 +81,14 @@ Map<String, dynamic> createEsp32controlRecordData({
   bool? isConnected,
   int? sampleTime,
   bool? resetValue,
+  bool? isMonitoring,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'isConnected': isConnected,
       'sampleTime': sampleTime,
       'resetValue': resetValue,
+      'isMonitoring': isMonitoring,
     }.withoutNulls,
   );
 
@@ -95,12 +103,13 @@ class Esp32controlRecordDocumentEquality
   bool equals(Esp32controlRecord? e1, Esp32controlRecord? e2) {
     return e1?.isConnected == e2?.isConnected &&
         e1?.sampleTime == e2?.sampleTime &&
-        e1?.resetValue == e2?.resetValue;
+        e1?.resetValue == e2?.resetValue &&
+        e1?.isMonitoring == e2?.isMonitoring;
   }
 
   @override
-  int hash(Esp32controlRecord? e) =>
-      const ListEquality().hash([e?.isConnected, e?.sampleTime, e?.resetValue]);
+  int hash(Esp32controlRecord? e) => const ListEquality()
+      .hash([e?.isConnected, e?.sampleTime, e?.resetValue, e?.isMonitoring]);
 
   @override
   bool isValidKey(Object? o) => o is Esp32controlRecord;

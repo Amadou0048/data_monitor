@@ -4,11 +4,17 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({super.key});
+  const HomePageWidget({
+    super.key,
+    required this.controlRef,
+  });
+
+  final DocumentReference? controlRef;
 
   @override
   State<HomePageWidget> createState() => _HomePageWidgetState();
@@ -23,6 +29,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => HomePageModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await widget.controlRef!.update(createEsp32controlRecordData(
+        isConnected: false,
+      ));
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -74,6 +87,66 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             fontWeight: FontWeight.w600,
                           ),
                     ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Etat : ',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              letterSpacing: 0.0,
+                            ),
+                      ),
+                      StreamBuilder<List<Esp32controlRecord>>(
+                        stream: queryEsp32controlRecord(
+                          singleRecord: true,
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).primary,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          List<Esp32controlRecord> textEsp32controlRecordList =
+                              snapshot.data!;
+                          // Return an empty Container when the item does not exist.
+                          if (snapshot.data!.isEmpty) {
+                            return Container();
+                          }
+                          final textEsp32controlRecord =
+                              textEsp32controlRecordList.isNotEmpty
+                                  ? textEsp32controlRecordList.first
+                                  : null;
+                          return Text(
+                            textEsp32controlRecord?.isConnected != null
+                                ? 'ON'
+                                : 'OFF',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  color: textEsp32controlRecord?.isConnected !=
+                                          null
+                                      ? FlutterFlowTheme.of(context).secondary
+                                      : FlutterFlowTheme.of(context).error,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                   Padding(
                     padding:
@@ -312,69 +385,69 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               width: 0.5,
                             ),
                           ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Indice',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            letterSpacing: 0.0,
-                                          ),
-                                    ),
-                                    Text(
-                                      'Tension (V)',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            letterSpacing: 0.0,
-                                          ),
-                                    ),
-                                    Text(
-                                      'Heure d\'acquisition',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            letterSpacing: 0.0,
-                                          ),
-                                    ),
-                                  ]
-                                      .divide(const SizedBox(width: 5.0))
-                                      .around(const SizedBox(width: 5.0)),
-                                ),
-                                StreamBuilder<List<VoltageAcquisitionRecord>>(
-                                  stream: queryVoltageAcquisitionRecord(),
-                                  builder: (context, snapshot) {
-                                    // Customize what your widget looks like when it's loading.
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: SizedBox(
-                                          width: 50.0,
-                                          height: 50.0,
-                                          child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                            ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Indice',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
+                                  Text(
+                                    'Tension (V)',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
+                                  Text(
+                                    'Heure d\'acquisition',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
+                                ]
+                                    .divide(const SizedBox(width: 5.0))
+                                    .around(const SizedBox(width: 5.0)),
+                              ),
+                              StreamBuilder<List<VoltageAcquisitionRecord>>(
+                                stream: queryVoltageAcquisitionRecord(),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
                                           ),
                                         ),
-                                      );
-                                    }
-                                    List<VoltageAcquisitionRecord>
-                                        columnVoltageAcquisitionRecordList =
-                                        snapshot.data!;
-                                    return Column(
+                                      ),
+                                    );
+                                  }
+                                  List<VoltageAcquisitionRecord>
+                                      columnVoltageAcquisitionRecordList =
+                                      snapshot.data!;
+                                  return SingleChildScrollView(
+                                    child: Column(
                                       mainAxisSize: MainAxisSize.max,
                                       children: List.generate(
                                           columnVoltageAcquisitionRecordList
@@ -382,69 +455,61 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         final columnVoltageAcquisitionRecord =
                                             columnVoltageAcquisitionRecordList[
                                                 columnIndex];
-                                        return ListView(
-                                          padding: EdgeInsets.zero,
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
+                                        return Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  columnVoltageAcquisitionRecord
-                                                      .voltageNum
-                                                      .toString(),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
+                                            Text(
+                                              columnVoltageAcquisitionRecord
+                                                  .voltageNum
+                                                  .toString(),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
                                                       .bodyMedium
                                                       .override(
                                                         fontFamily:
                                                             'Readex Pro',
                                                         letterSpacing: 0.0,
                                                       ),
-                                                ),
-                                                Text(
-                                                  columnVoltageAcquisitionRecord
-                                                      .voltageValue
-                                                      .toString(),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                                ),
-                                                Text(
-                                                  dateTimeFormat(
-                                                      'd/M/y',
-                                                      columnVoltageAcquisitionRecord
-                                                          .voltageTime!),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                                ),
-                                              ]
-                                                  .divide(const SizedBox(width: 5.0))
-                                                  .around(const SizedBox(width: 5.0)),
                                             ),
-                                          ],
+                                            Text(
+                                              columnVoltageAcquisitionRecord
+                                                  .voltageValue
+                                                  .toString(),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                            ),
+                                            Text(
+                                              dateTimeFormat(
+                                                  'd/M/y',
+                                                  columnVoltageAcquisitionRecord
+                                                      .voltageTime!),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                            ),
+                                          ]
+                                              .divide(const SizedBox(width: 5.0))
+                                              .around(const SizedBox(width: 5.0)),
                                         );
                                       }),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),
