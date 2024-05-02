@@ -11,7 +11,7 @@ export 'home_page_model.dart';
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({
     super.key,
-    required this.controlRef,
+    this.controlRef,
   });
 
   final DocumentReference? controlRef;
