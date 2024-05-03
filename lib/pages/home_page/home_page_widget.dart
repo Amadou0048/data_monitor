@@ -70,9 +70,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.asset(
                       'assets/images/ucad.jpg',
-                      width: 154.0,
-                      height: 109.0,
+                      width: 133.0,
+                      height: 94.0,
                       fit: BoxFit.cover,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 5.0),
+                    child: Text(
+                      'Ecole Supérieure Polytechnique de Dakar\nDépartement Génie Electrique',
+                      textAlign: TextAlign.center,
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Readex Pro',
+                            letterSpacing: 0.0,
+                          ),
                     ),
                   ),
                   Padding(
@@ -129,15 +140,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ? textEsp32controlRecordList.first
                                   : null;
                           return Text(
-                            textEsp32controlRecord?.isConnected != null
+                            textEsp32controlRecord?.isConnected == true
                                 ? 'ON'
                                 : 'OFF',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Readex Pro',
-                                  color: textEsp32controlRecord?.isConnected !=
-                                          null
+                                  color: textEsp32controlRecord?.isConnected ==
+                                          true
                                       ? FlutterFlowTheme.of(context).secondary
                                       : FlutterFlowTheme.of(context).error,
                                   letterSpacing: 0.0,
@@ -259,14 +270,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             onPressed: () async {
                               await buttonEsp32controlRecord.reference
                                   .update(createEsp32controlRecordData(
-                                isConnected:
-                                    buttonEsp32controlRecord.isConnected ==
+                                isMonitoring:
+                                    buttonEsp32controlRecord.isMonitoring ==
                                             true
                                         ? false
                                         : true,
                               ));
                             },
-                            text: buttonEsp32controlRecord!.isConnected
+                            text: buttonEsp32controlRecord!.isMonitoring
                                 ? 'STOP'
                                 : 'START',
                             options: FFButtonOptions(
@@ -360,188 +371,222 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         .divide(const SizedBox(width: 50.0))
                         .around(const SizedBox(width: 50.0)),
                   ),
-                  Align(
-                    alignment: const AlignmentDirectional(0.0, 1.0),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                      child: Material(
-                        color: Colors.transparent,
-                        elevation: 2.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14.0),
-                        ),
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            maxWidth: 500.0,
-                            maxHeight: 1000.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
+                  Expanded(
+                    child: Align(
+                      alignment: const AlignmentDirectional(0.0, 1.0),
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 20.0, 0.0, 20.0),
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 2.0,
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14.0),
-                            shape: BoxShape.rectangle,
-                            border: Border.all(
-                              width: 0.5,
+                          ),
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth: () {
+                                if (MediaQuery.sizeOf(context).width <
+                                    kBreakpointSmall) {
+                                  return 300.0;
+                                } else if (MediaQuery.sizeOf(context).width <
+                                    kBreakpointMedium) {
+                                  return 500.0;
+                                } else if (MediaQuery.sizeOf(context).width <
+                                    kBreakpointLarge) {
+                                  return 500.0;
+                                } else {
+                                  return 500.0;
+                                }
+                              }(),
+                              maxHeight: 1000.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              borderRadius: BorderRadius.circular(14.0),
+                              shape: BoxShape.rectangle,
+                              border: Border.all(
+                                width: 0.5,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      'Indice',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    Text(
+                                      'Tension (V)',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    Text(
+                                      'Date',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    decoration: const BoxDecoration(),
+                                    child: StreamBuilder<
+                                        List<VoltageAcquisitionRecord>>(
+                                      stream: queryVoltageAcquisitionRecord(),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<VoltageAcquisitionRecord>
+                                            columnVoltageAcquisitionRecordList =
+                                            snapshot.data!;
+                                        return SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: List.generate(
+                                                columnVoltageAcquisitionRecordList
+                                                    .length, (columnIndex) {
+                                              final columnVoltageAcquisitionRecord =
+                                                  columnVoltageAcquisitionRecordList[
+                                                      columnIndex];
+                                              return Padding(
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 2.0, 0.0, 0.0),
+                                                child: Material(
+                                                  color: Colors.transparent,
+                                                  elevation: 1.0,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            0.0),
+                                                  ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .alternate,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              0.0),
+                                                      shape: BoxShape.rectangle,
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceAround,
+                                                          children: [
+                                                            Text(
+                                                              columnVoltageAcquisitionRecord
+                                                                  .voltageNum
+                                                                  .toString(),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
+                                                            ),
+                                                            Text(
+                                                              columnVoltageAcquisitionRecord
+                                                                  .voltageValue
+                                                                  .toString(),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
+                                                            ),
+                                                            Text(
+                                                              dateTimeFormat('M/d H:mm', columnVoltageAcquisitionRecord.voltageTime),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Indice',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          letterSpacing: 0.0,
-                                        ),
-                                  ),
-                                  Text(
-                                    'Tension (V)',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          letterSpacing: 0.0,
-                                        ),
-                                  ),
-                                  Text(
-                                    'Heure d\'acquisition',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          letterSpacing: 0.0,
-                                        ),
-                                  ),
-                                ]
-                                    .divide(const SizedBox(width: 5.0))
-                                    .around(const SizedBox(width: 5.0)),
-                              ),
-                              StreamBuilder<List<VoltageAcquisitionRecord>>(
-                                stream: queryVoltageAcquisitionRecord(),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 50.0,
-                                        height: 50.0,
-                                        child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  List<VoltageAcquisitionRecord>
-                                      columnVoltageAcquisitionRecordList =
-                                      snapshot.data!;
-                                  return SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: List.generate(
-                                          columnVoltageAcquisitionRecordList
-                                              .length, (columnIndex) {
-                                        final columnVoltageAcquisitionRecord =
-                                            columnVoltageAcquisitionRecordList[
-                                                columnIndex];
-                                        return Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              columnVoltageAcquisitionRecord
-                                                  .voltageNum
-                                                  .toString(),
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                            ),
-                                            Text(
-                                              columnVoltageAcquisitionRecord
-                                                  .voltageValue
-                                                  .toString(),
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                            ),
-                                            Text(
-                                              dateTimeFormat(
-                                                  'd/M/y',
-                                                  columnVoltageAcquisitionRecord
-                                                      .voltageTime!),
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                            ),
-                                          ]
-                                              .divide(const SizedBox(width: 5.0))
-                                              .around(const SizedBox(width: 5.0)),
-                                        );
-                                      }),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
-                    child: FFButtonWidget(
-                      onPressed: () {
-                        print('Button pressed ...');
-                      },
-                      text: 'Se Déconnecter',
-                      options: FFButtonOptions(
-                        height: 40.0,
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: const Color(0xFFEF3953),
-                        textStyle:
-                            FlutterFlowTheme.of(context).titleSmall.override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                  letterSpacing: 0.0,
-                                ),
-                        elevation: 3.0,
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                   ),
