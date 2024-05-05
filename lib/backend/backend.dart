@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'schema/util/firestore_util.dart';
 
-import 'schema/voltage_acquisition_record.dart';
 import 'schema/esp32control_record.dart';
+import 'schema/acquisition_record.dart';
 
 export 'dart:async' show StreamSubscription;
 export 'package:cloud_firestore/cloud_firestore.dart' hide Order;
@@ -12,45 +12,8 @@ export 'schema/index.dart';
 export 'schema/util/firestore_util.dart';
 export 'schema/util/schema_util.dart';
 
-export 'schema/voltage_acquisition_record.dart';
 export 'schema/esp32control_record.dart';
-
-/// Functions to query VoltageAcquisitionRecords (as a Stream and as a Future).
-Future<int> queryVoltageAcquisitionRecordCount({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-}) =>
-    queryCollectionCount(
-      VoltageAcquisitionRecord.collection,
-      queryBuilder: queryBuilder,
-      limit: limit,
-    );
-
-Stream<List<VoltageAcquisitionRecord>> queryVoltageAcquisitionRecord({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollection(
-      VoltageAcquisitionRecord.collection,
-      VoltageAcquisitionRecord.fromSnapshot,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<List<VoltageAcquisitionRecord>> queryVoltageAcquisitionRecordOnce({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollectionOnce(
-      VoltageAcquisitionRecord.collection,
-      VoltageAcquisitionRecord.fromSnapshot,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
+export 'schema/acquisition_record.dart';
 
 /// Functions to query Esp32controlRecords (as a Stream and as a Future).
 Future<int> queryEsp32controlRecordCount({
@@ -84,6 +47,43 @@ Future<List<Esp32controlRecord>> queryEsp32controlRecordOnce({
     queryCollectionOnce(
       Esp32controlRecord.collection,
       Esp32controlRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+/// Functions to query AcquisitionRecords (as a Stream and as a Future).
+Future<int> queryAcquisitionRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      AcquisitionRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<AcquisitionRecord>> queryAcquisitionRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      AcquisitionRecord.collection,
+      AcquisitionRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<AcquisitionRecord>> queryAcquisitionRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      AcquisitionRecord.collection,
+      AcquisitionRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,

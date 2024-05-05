@@ -29,24 +29,35 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) => const HomePageWidget(),
+      errorBuilder: (context, state) => const SupervisionPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => const HomePageWidget(),
+          builder: (context, _) => const SupervisionPageWidget(),
         ),
         FFRoute(
-          name: 'HomePage',
-          path: '/homePage',
-          builder: (context, params) => HomePageWidget(
+          name: 'supervisionPage',
+          path: '/supervisionPage',
+          builder: (context, params) => SupervisionPageWidget(
             controlRef: params.getParam(
               'controlRef',
               ParamType.DocumentReference,
               isList: false,
               collectionNamePath: ['ESP32CONTROL'],
             ),
+            acqref: params.getParam(
+              'acqref',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['ACQUISITION'],
+            ),
           ),
+        ),
+        FFRoute(
+          name: 'entryPage',
+          path: '/entryPage',
+          builder: (context, params) => const EntryPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
