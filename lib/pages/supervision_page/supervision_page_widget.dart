@@ -147,7 +147,10 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                 ),
                           ),
                           Text(
-                            '',
+                            valueOrDefault<String>(
+                              containerEsp32controlRecord?.monitorEmail,
+                              'Aucune',
+                            ),
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
