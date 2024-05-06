@@ -138,7 +138,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Etat : ',
+                            'Contact du superviseur: ',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -147,12 +147,13 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                 ),
                           ),
                           Text(
-                            'ON',
+                            '',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Readex Pro',
-                                  color: FlutterFlowTheme.of(context).secondary,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -161,7 +162,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                       ),
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
-                            0.0, 20.0, 20.0, 20.0),
+                            0.0, 20.0, 20.0, 0.0),
                         child: StreamBuilder<List<AcquisitionRecord>>(
                           stream: queryAcquisitionRecord(
                             queryBuilder: (acquisitionRecord) =>
@@ -247,6 +248,72 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 5.0, 0.0),
                               child: Text(
+                                'Seuil d\'alerte (V) : ',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                            ),
+                            FlutterFlowDropDown<double>(
+                              controller: _model.dropDown1ValueController ??=
+                                  FormFieldController<double>(
+                                _model.dropDown1Value ??= 2.8,
+                              ),
+                              options: List<double>.from(
+                                  FFAppConstants.threesholdValue),
+                              optionLabels: const <String>[],
+                              onChanged: (val) async {
+                                setState(() => _model.dropDown1Value = val);
+                                await containerEsp32controlRecord!.reference
+                                    .update(createEsp32controlRecordData(
+                                  threeshold: _model.dropDown1Value,
+                                ));
+                              },
+                              width: 120.0,
+                              height: 48.0,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                              icon: Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                size: 24.0,
+                              ),
+                              fillColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              elevation: 2.0,
+                              borderColor:
+                                  FlutterFlowTheme.of(context).alternate,
+                              borderWidth: 2.0,
+                              borderRadius: 8.0,
+                              margin: const EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 4.0, 16.0, 4.0),
+                              hidesUnderline: true,
+                              isOverButton: true,
+                              isSearchable: false,
+                              isMultiSelect: false,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 10.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 5.0, 0.0),
+                              child: Text(
                                 'Periode d\'echantillonnage (ms) : ',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
@@ -257,16 +324,16 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                               ),
                             ),
                             FlutterFlowDropDown<String>(
-                              controller: _model.dropDownValueController ??=
+                              controller: _model.dropDown0ValueController ??=
                                   FormFieldController<String>(
-                                _model.dropDownValue ??= '2000',
+                                _model.dropDown0Value ??= '2000',
                               ),
                               options: FFAppConstants.sampleTime,
                               onChanged: (val) async {
-                                setState(() => _model.dropDownValue = val);
+                                setState(() => _model.dropDown0Value = val);
                                 await containerEsp32controlRecord!.reference
                                     .update(createEsp32controlRecordData(
-                                  sampleTime: _model.dropDownValue,
+                                  sampleTime: _model.dropDown0Value,
                                 ));
                               },
                               width: 120.0,
@@ -334,8 +401,6 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                               true
                                           ? false
                                           : true,
-                                      acquisitionCount:
-                                          containerAcquisitionRecordList.length,
                                     ));
                                   },
                                   text:
@@ -407,7 +472,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                           alignment: const AlignmentDirectional(0.0, 1.0),
                           child: Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
-                                0.0, 20.0, 0.0, 20.0),
+                                0.0, 10.0, 0.0, 20.0),
                             child: Material(
                               color: Colors.transparent,
                               elevation: 2.0,

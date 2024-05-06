@@ -36,35 +36,23 @@ class Esp32controlRecord extends FirestoreRecord {
   bool get mayWeReset => _mayWeReset ?? false;
   bool hasMayWeReset() => _mayWeReset != null;
 
-  // "userAuthToken" field.
-  String? _userAuthToken;
-  String get userAuthToken => _userAuthToken ?? '';
-  bool hasUserAuthToken() => _userAuthToken != null;
-
-  // "acquisitionCount" field.
-  int? _acquisitionCount;
-  int get acquisitionCount => _acquisitionCount ?? 0;
-  bool hasAcquisitionCount() => _acquisitionCount != null;
-
   // "monitorEmail" field.
   String? _monitorEmail;
   String get monitorEmail => _monitorEmail ?? '';
   bool hasMonitorEmail() => _monitorEmail != null;
 
-  // "monitorName" field.
-  String? _monitorName;
-  String get monitorName => _monitorName ?? '';
-  bool hasMonitorName() => _monitorName != null;
+  // "threeshold" field.
+  double? _threeshold;
+  double get threeshold => _threeshold ?? 0.0;
+  bool hasThreeshold() => _threeshold != null;
 
   void _initializeFields() {
     _isConnected = snapshotData['isConnected'] as bool?;
     _isMonitoring = snapshotData['isMonitoring'] as bool?;
     _sampleTime = snapshotData['sampleTime'] as String?;
     _mayWeReset = snapshotData['mayWeReset'] as bool?;
-    _userAuthToken = snapshotData['userAuthToken'] as String?;
-    _acquisitionCount = castToType<int>(snapshotData['acquisitionCount']);
     _monitorEmail = snapshotData['monitorEmail'] as String?;
-    _monitorName = snapshotData['monitorName'] as String?;
+    _threeshold = castToType<double>(snapshotData['threeshold']);
   }
 
   static CollectionReference get collection =>
@@ -106,10 +94,8 @@ Map<String, dynamic> createEsp32controlRecordData({
   bool? isMonitoring,
   String? sampleTime,
   bool? mayWeReset,
-  String? userAuthToken,
-  int? acquisitionCount,
   String? monitorEmail,
-  String? monitorName,
+  double? threeshold,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -117,10 +103,8 @@ Map<String, dynamic> createEsp32controlRecordData({
       'isMonitoring': isMonitoring,
       'sampleTime': sampleTime,
       'mayWeReset': mayWeReset,
-      'userAuthToken': userAuthToken,
-      'acquisitionCount': acquisitionCount,
       'monitorEmail': monitorEmail,
-      'monitorName': monitorName,
+      'threeshold': threeshold,
     }.withoutNulls,
   );
 
@@ -137,10 +121,8 @@ class Esp32controlRecordDocumentEquality
         e1?.isMonitoring == e2?.isMonitoring &&
         e1?.sampleTime == e2?.sampleTime &&
         e1?.mayWeReset == e2?.mayWeReset &&
-        e1?.userAuthToken == e2?.userAuthToken &&
-        e1?.acquisitionCount == e2?.acquisitionCount &&
         e1?.monitorEmail == e2?.monitorEmail &&
-        e1?.monitorName == e2?.monitorName;
+        e1?.threeshold == e2?.threeshold;
   }
 
   @override
@@ -149,10 +131,8 @@ class Esp32controlRecordDocumentEquality
         e?.isMonitoring,
         e?.sampleTime,
         e?.mayWeReset,
-        e?.userAuthToken,
-        e?.acquisitionCount,
         e?.monitorEmail,
-        e?.monitorName
+        e?.threeshold
       ]);
 
   @override
