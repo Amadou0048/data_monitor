@@ -121,7 +121,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                         child: Text(
-                          'Interface de supervision de données by Thérése&Amadou',
+                          'Interface de supervision de données by Amadou',
                           textAlign: TextAlign.center,
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
@@ -234,7 +234,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                         ),
                                       ),
                                       yAxisLabelInfo: const AxisLabelInfo(
-                                        title: 'Tension (V)',
+                                        title: 'Température (°C)',
                                         titleTextStyle: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14.0,
