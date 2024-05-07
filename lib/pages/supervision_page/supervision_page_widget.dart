@@ -302,8 +302,9 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                       ),
                                       axisBounds: const AxisBounds(),
                                       xAxisLabelInfo: const AxisLabelInfo(
-                                        title: 'Time(s0',
+                                        title: 'Time(s)',
                                         titleTextStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 14.0,
                                         ),
                                         reservedSize: 32.0,
@@ -311,6 +312,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                       yAxisLabelInfo: const AxisLabelInfo(
                                         title: 'Saturation en oxygéne (%)',
                                         titleTextStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 14.0,
                                         ),
                                         reservedSize: 40.0,
