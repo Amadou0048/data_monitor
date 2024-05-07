@@ -298,7 +298,10 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                             FlutterFlowTheme.of(context)
                                                 .secondaryBackground,
                                         showGrid: true,
-                                        showBorder: false,
+                                        borderColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                        borderWidth: 1.0,
                                       ),
                                       axisBounds: const AxisBounds(),
                                       xAxisLabelInfo: const AxisLabelInfo(
