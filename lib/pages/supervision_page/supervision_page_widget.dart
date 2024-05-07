@@ -14,11 +14,9 @@ class SupervisionPageWidget extends StatefulWidget {
   const SupervisionPageWidget({
     super.key,
     this.controlRef,
-    this.acqref,
   });
 
   final DocumentReference? controlRef;
-  final DocumentReference? acqref;
 
   @override
   State<SupervisionPageWidget> createState() => _SupervisionPageWidgetState();
@@ -148,160 +146,179 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                           ),
                           Text(
                             valueOrDefault<String>(
-                              containerEsp32controlRecord?.monitorEmail,
-                              'Aucune',
+                              containerEsp32controlRecord?.monitorPhoneNumber,
+                              'Pas défini',
                             ),
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Readex Pro',
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            0.0, 20.0, 20.0, 0.0),
-                        child: StreamBuilder<List<AcquisitionRecord>>(
-                          stream: queryAcquisitionRecord(
-                            queryBuilder: (acquisitionRecord) =>
-                                acquisitionRecord.orderBy('acquisition_num'),
-                          ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 50.0,
-                                  height: 50.0,
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      FlutterFlowTheme.of(context).primary,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }
-                            List<AcquisitionRecord> chartAcquisitionRecordList =
-                                snapshot.data!;
-                            return SizedBox(
-                              width: 664.0,
-                              height: 343.0,
-                              child: FlutterFlowLineChart(
-                                data: [
-                                  FFLineChartData(
-                                    xData: chartAcquisitionRecordList
-                                        .map((d) => d.acquisitionTimeMs)
-                                        .toList(),
-                                    yData: chartAcquisitionRecordList
-                                        .map((d) => d.acquisitionValue)
-                                        .toList(),
-                                    settings: LineChartBarData(
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      barWidth: 2.0,
-                                    ),
-                                  )
-                                ],
-                                chartStylingInfo: ChartStylingInfo(
-                                  enableTooltip: true,
-                                  tooltipBackgroundColor:
-                                      FlutterFlowTheme.of(context).alternate,
-                                  backgroundColor: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  showGrid: true,
-                                  borderColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  borderWidth: 1.0,
-                                ),
-                                axisBounds: const AxisBounds(),
-                                xAxisLabelInfo: const AxisLabelInfo(
-                                  title: 'Time (ms)',
-                                  titleTextStyle: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.0,
-                                  ),
-                                ),
-                                yAxisLabelInfo: const AxisLabelInfo(
-                                  title: 'Tension (V)',
-                                  titleTextStyle: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.0,
-                                  ),
-                                  showLabels: true,
-                                  labelInterval: 10.0,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 10.0),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 5.0, 0.0),
-                              child: Text(
-                                'Seuil d\'alerte (V) : ',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0.0,
+                                  20.0, 20.0, 20.0, 0.0),
+                              child: StreamBuilder<List<PatientRecord>>(
+                                stream: queryPatientRecord(
+                                  queryBuilder: (patientRecord) =>
+                                      patientRecord.orderBy('indice_Mesure'),
+                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  List<PatientRecord> chartPatientRecordList =
+                                      snapshot.data!;
+                                  return SizedBox(
+                                    width: 664.0,
+                                    height: 343.0,
+                                    child: FlutterFlowLineChart(
+                                      data: [
+                                        FFLineChartData(
+                                          xData: chartPatientRecordList
+                                              .map((d) => d.timeMesureMs)
+                                              .toList(),
+                                          yData: chartPatientRecordList
+                                              .map((d) => d.temperature)
+                                              .toList(),
+                                          settings: LineChartBarData(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            barWidth: 2.0,
+                                          ),
+                                        )
+                                      ],
+                                      chartStylingInfo: ChartStylingInfo(
+                                        enableTooltip: true,
+                                        tooltipBackgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .alternate,
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                        showGrid: true,
+                                        borderColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                        borderWidth: 1.0,
+                                      ),
+                                      axisBounds: const AxisBounds(),
+                                      xAxisLabelInfo: const AxisLabelInfo(
+                                        title: 'Time (ms)',
+                                        titleTextStyle: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+                                      yAxisLabelInfo: const AxisLabelInfo(
+                                        title: 'Tension (V)',
+                                        titleTextStyle: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14.0,
+                                        ),
+                                        showLabels: true,
+                                        labelInterval: 10.0,
+                                      ),
                                     ),
+                                  );
+                                },
                               ),
                             ),
-                            FlutterFlowDropDown<double>(
-                              controller: _model.dropDown1ValueController ??=
-                                  FormFieldController<double>(
-                                _model.dropDown1Value ??= 2.8,
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 20.0, 20.0, 0.0),
+                              child: StreamBuilder<List<PatientRecord>>(
+                                stream: queryPatientRecord(
+                                  queryBuilder: (patientRecord) =>
+                                      patientRecord.orderBy('indice_Mesure'),
+                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  List<PatientRecord> chartPatientRecordList =
+                                      snapshot.data!;
+                                  return SizedBox(
+                                    width: 664.0,
+                                    height: 343.0,
+                                    child: FlutterFlowLineChart(
+                                      data: [
+                                        FFLineChartData(
+                                          xData: chartPatientRecordList
+                                              .map((d) => d.timeMesureMs)
+                                              .toList(),
+                                          yData: chartPatientRecordList
+                                              .map((d) => d.tso)
+                                              .toList(),
+                                          settings: LineChartBarData(
+                                            color: FlutterFlowTheme.of(context)
+                                                .error,
+                                            barWidth: 2.0,
+                                          ),
+                                        )
+                                      ],
+                                      chartStylingInfo: ChartStylingInfo(
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                        showGrid: true,
+                                        showBorder: false,
+                                      ),
+                                      axisBounds: const AxisBounds(),
+                                      xAxisLabelInfo: const AxisLabelInfo(
+                                        title: 'Time(s0',
+                                        titleTextStyle: TextStyle(
+                                          fontSize: 14.0,
+                                        ),
+                                        reservedSize: 32.0,
+                                      ),
+                                      yAxisLabelInfo: const AxisLabelInfo(
+                                        title: 'Saturation en oxygéne (%)',
+                                        titleTextStyle: TextStyle(
+                                          fontSize: 14.0,
+                                        ),
+                                        reservedSize: 40.0,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                              options: List<double>.from(
-                                  FFAppConstants.threesholdValue),
-                              optionLabels: const <String>[],
-                              onChanged: (val) async {
-                                setState(() => _model.dropDown1Value = val);
-                                await containerEsp32controlRecord!.reference
-                                    .update(createEsp32controlRecordData(
-                                  threeshold: _model.dropDown1Value,
-                                ));
-                              },
-                              width: 120.0,
-                              height: 48.0,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    letterSpacing: 0.0,
-                                  ),
-                              icon: Icon(
-                                Icons.keyboard_arrow_down_rounded,
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                size: 24.0,
-                              ),
-                              fillColor: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              elevation: 2.0,
-                              borderColor:
-                                  FlutterFlowTheme.of(context).alternate,
-                              borderWidth: 2.0,
-                              borderRadius: 8.0,
-                              margin: const EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 4.0, 16.0, 4.0),
-                              hidesUnderline: true,
-                              isOverButton: true,
-                              isSearchable: false,
-                              isMultiSelect: false,
                             ),
                           ],
                         ),
@@ -326,12 +343,14 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                     ),
                               ),
                             ),
-                            FlutterFlowDropDown<String>(
+                            FlutterFlowDropDown<int>(
                               controller: _model.dropDown0ValueController ??=
-                                  FormFieldController<String>(
-                                _model.dropDown0Value ??= '2000',
+                                  FormFieldController<int>(
+                                _model.dropDown0Value ??= 2000,
                               ),
-                              options: FFAppConstants.sampleTime,
+                              options:
+                                  List<int>.from(FFAppConstants.sampleTime),
+                              optionLabels: const <String>[],
                               onChanged: (val) async {
                                 setState(() => _model.dropDown0Value = val);
                                 await containerEsp32controlRecord!.reference
@@ -370,105 +389,83 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                           ],
                         ),
                       ),
-                      StreamBuilder<List<AcquisitionRecord>>(
-                        stream: queryAcquisitionRecord(),
-                        builder: (context, snapshot) {
-                          // Customize what your widget looks like when it's loading.
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: SizedBox(
-                                width: 50.0,
-                                height: 50.0,
-                                child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    FlutterFlowTheme.of(context).primary,
-                                  ),
+                      Container(
+                        decoration: const BoxDecoration(),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FFButtonWidget(
+                              onPressed: () async {
+                                await containerEsp32controlRecord.reference
+                                    .update(createEsp32controlRecordData(
+                                  isMonitoring: containerEsp32controlRecord
+                                              .isMonitoring ==
+                                          true
+                                      ? false
+                                      : true,
+                                ));
+                              },
+                              text: containerEsp32controlRecord!.isMonitoring
+                                  ? 'STOP'
+                                  : 'START',
+                              options: FFButtonOptions(
+                                height: 40.0,
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    24.0, 0.0, 24.0, 0.0),
+                                iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      color: Colors.white,
+                                      letterSpacing: 0.0,
+                                    ),
+                                elevation: 3.0,
+                                borderSide: const BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
                                 ),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                            );
-                          }
-                          List<AcquisitionRecord>
-                              containerAcquisitionRecordList = snapshot.data!;
-                          return Container(
-                            decoration: const BoxDecoration(),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FFButtonWidget(
-                                  onPressed: () async {
-                                    await containerEsp32controlRecord.reference
-                                        .update(createEsp32controlRecordData(
-                                      isMonitoring: containerEsp32controlRecord
-                                                  .isMonitoring ==
-                                              true
-                                          ? false
-                                          : true,
-                                    ));
-                                  },
-                                  text:
-                                      containerEsp32controlRecord!.isMonitoring
-                                          ? 'STOP'
-                                          : 'START',
-                                  options: FFButtonOptions(
-                                    height: 40.0,
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        24.0, 0.0, 24.0, 0.0),
-                                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          color: Colors.white,
-                                          letterSpacing: 0.0,
-                                        ),
-                                    elevation: 3.0,
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                ),
-                                FFButtonWidget(
-                                  onPressed: true
-                                      ? null
-                                      : () {
-                                          print('Button pressed ...');
-                                        },
-                                  text: 'Reset',
-                                  options: FFButtonOptions(
-                                    height: 40.0,
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        24.0, 0.0, 24.0, 0.0),
-                                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          color: Colors.white,
-                                          letterSpacing: 0.0,
-                                        ),
-                                    elevation: 3.0,
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    disabledColor:
-                                        FlutterFlowTheme.of(context).alternate,
-                                  ),
-                                ),
-                              ]
-                                  .divide(const SizedBox(width: 50.0))
-                                  .around(const SizedBox(width: 50.0)),
                             ),
-                          );
-                        },
+                            FFButtonWidget(
+                              onPressed: true
+                                  ? null
+                                  : () {
+                                      print('Button pressed ...');
+                                    },
+                              text: 'Nouveau patient',
+                              options: FFButtonOptions(
+                                height: 40.0,
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    24.0, 0.0, 24.0, 0.0),
+                                iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      color: Colors.white,
+                                      letterSpacing: 0.0,
+                                    ),
+                                elevation: 3.0,
+                                borderSide: const BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                                disabledColor:
+                                    FlutterFlowTheme.of(context).alternate,
+                              ),
+                            ),
+                          ]
+                              .divide(const SizedBox(width: 50.0))
+                              .around(const SizedBox(width: 50.0)),
+                        ),
                       ),
                       Expanded(
                         child: Align(
@@ -530,27 +527,27 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                           MainAxisAlignment.spaceAround,
                                       children: [
                                         Text(
-                                          'Nature',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                        ),
-                                        Text(
-                                          'Valeur',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                        ),
-                                        Text(
                                           'Date',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        Text(
+                                          'Température',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        Text(
+                                          'TSO',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
                                               .override(
@@ -562,158 +559,195 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                       ],
                                     ),
                                     Expanded(
-                                      child: Container(
-                                        decoration: const BoxDecoration(),
-                                        child: StreamBuilder<
-                                            List<AcquisitionRecord>>(
-                                          stream: queryAcquisitionRecord(),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 50.0,
-                                                  height: 50.0,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
-                                                    ),
+                                      child: StreamBuilder<List<PatientRecord>>(
+                                        stream: queryPatientRecord(),
+                                        builder: (context, snapshot) {
+                                          // Customize what your widget looks like when it's loading.
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 50.0,
+                                                height: 50.0,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
                                                   ),
                                                 ),
-                                              );
-                                            }
-                                            List<AcquisitionRecord>
-                                                columnAcquisitionRecordList =
-                                                snapshot.data!;
-                                            return SingleChildScrollView(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: List.generate(
-                                                    columnAcquisitionRecordList
-                                                        .length, (columnIndex) {
-                                                  final columnAcquisitionRecord =
-                                                      columnAcquisitionRecordList[
-                                                          columnIndex];
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 2.0,
-                                                                0.0, 0.0),
-                                                    child: Material(
-                                                      color: Colors.transparent,
-                                                      elevation: 1.0,
-                                                      shape:
-                                                          const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  8.0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  8.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  8.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  8.0),
-                                                        ),
-                                                      ),
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .alternate,
-                                                          borderRadius:
-                                                              const BorderRadius.only(
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    8.0),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    8.0),
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    8.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    8.0),
-                                                          ),
-                                                          shape: BoxShape
-                                                              .rectangle,
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
-                                                          children: [
-                                                            Text(
-                                                              columnAcquisitionRecord
-                                                                  .acquisitionNature,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
-                                                            Text(
-                                                              columnAcquisitionRecord
-                                                                  .acquisitionValue
-                                                                  .toString(),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
-                                                            Text(
-                                                              '${columnAcquisitionRecord.acquisitionDay}/${columnAcquisitionRecord.acquisitionMonth} ${columnAcquisitionRecord.acquisitionHour}:${columnAcquisitionRecord.acquisitionMinute}:${columnAcquisitionRecord.acquisitionSecond}',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
-                                                          ],
+                                              ),
+                                            );
+                                          }
+                                          List<PatientRecord>
+                                              containerPatientRecordList =
+                                              snapshot.data!;
+                                          return Container(
+                                            decoration: const BoxDecoration(),
+                                            child: StreamBuilder<
+                                                List<PatientRecord>>(
+                                              stream: queryPatientRecord(),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50.0,
+                                                      height: 50.0,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                Color>(
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
                                                         ),
                                                       ),
                                                     ),
                                                   );
-                                                }),
-                                              ),
-                                            );
-                                          },
-                                        ),
+                                                }
+                                                List<PatientRecord>
+                                                    columnPatientRecordList =
+                                                    snapshot.data!;
+                                                return SingleChildScrollView(
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: List.generate(
+                                                        columnPatientRecordList
+                                                            .length,
+                                                        (columnIndex) {
+                                                      final columnPatientRecord =
+                                                          columnPatientRecordList[
+                                                              columnIndex];
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    2.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        child: Material(
+                                                          color: Colors
+                                                              .transparent,
+                                                          elevation: 1.0,
+                                                          shape:
+                                                              const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .only(
+                                                              bottomLeft: Radius
+                                                                  .circular(
+                                                                      8.0),
+                                                              bottomRight:
+                                                                  Radius
+                                                                      .circular(
+                                                                          8.0),
+                                                              topLeft: Radius
+                                                                  .circular(
+                                                                      8.0),
+                                                              topRight: Radius
+                                                                  .circular(
+                                                                      8.0),
+                                                            ),
+                                                          ),
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .alternate,
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .only(
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        8.0),
+                                                                bottomRight: Radius
+                                                                    .circular(
+                                                                        8.0),
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        8.0),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        8.0),
+                                                              ),
+                                                              shape: BoxShape
+                                                                  .rectangle,
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                Text(
+                                                                  '${containerEsp32controlRecord.hour.toString()}:${containerEsp32controlRecord.minute.toString()}:${containerEsp32controlRecord.second.toString()}',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                                Text(
+                                                                  columnPatientRecord
+                                                                      .temperature
+                                                                      .toString(),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                                Text(
+                                                                  columnPatientRecord
+                                                                      .tso
+                                                                      .toString(),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                   ],

@@ -46,12 +46,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               isList: false,
               collectionNamePath: ['ESP32CONTROL'],
             ),
-            acqref: params.getParam(
-              'acqref',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['ACQUISITION'],
-            ),
           ),
         ),
         FFRoute(

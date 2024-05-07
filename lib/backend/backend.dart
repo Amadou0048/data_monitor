@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'schema/util/firestore_util.dart';
 
 import 'schema/esp32control_record.dart';
-import 'schema/acquisition_record.dart';
+import 'schema/patient_record.dart';
 
 export 'dart:async' show StreamSubscription;
 export 'package:cloud_firestore/cloud_firestore.dart' hide Order;
@@ -13,7 +13,7 @@ export 'schema/util/firestore_util.dart';
 export 'schema/util/schema_util.dart';
 
 export 'schema/esp32control_record.dart';
-export 'schema/acquisition_record.dart';
+export 'schema/patient_record.dart';
 
 /// Functions to query Esp32controlRecords (as a Stream and as a Future).
 Future<int> queryEsp32controlRecordCount({
@@ -52,38 +52,38 @@ Future<List<Esp32controlRecord>> queryEsp32controlRecordOnce({
       singleRecord: singleRecord,
     );
 
-/// Functions to query AcquisitionRecords (as a Stream and as a Future).
-Future<int> queryAcquisitionRecordCount({
+/// Functions to query PatientRecords (as a Stream and as a Future).
+Future<int> queryPatientRecordCount({
   Query Function(Query)? queryBuilder,
   int limit = -1,
 }) =>
     queryCollectionCount(
-      AcquisitionRecord.collection,
+      PatientRecord.collection,
       queryBuilder: queryBuilder,
       limit: limit,
     );
 
-Stream<List<AcquisitionRecord>> queryAcquisitionRecord({
+Stream<List<PatientRecord>> queryPatientRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollection(
-      AcquisitionRecord.collection,
-      AcquisitionRecord.fromSnapshot,
+      PatientRecord.collection,
+      PatientRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-Future<List<AcquisitionRecord>> queryAcquisitionRecordOnce({
+Future<List<PatientRecord>> queryPatientRecordOnce({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollectionOnce(
-      AcquisitionRecord.collection,
-      AcquisitionRecord.fromSnapshot,
+      PatientRecord.collection,
+      PatientRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
