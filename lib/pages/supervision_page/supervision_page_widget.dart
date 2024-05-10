@@ -119,7 +119,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 10.0, 0.0, 0.0),
                           child: Text(
-                            'Interface de supervision de données by Amadou',
+                            'Interface de supervision de données by Thérèse&Amadou',
                             textAlign: TextAlign.center,
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
@@ -306,7 +306,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                         ),
                                         axisBounds: const AxisBounds(),
                                         xAxisLabelInfo: const AxisLabelInfo(
-                                          title: 'Time(s)',
+                                          title: 'Time (ms)',
                                           titleTextStyle: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14.0,
@@ -537,7 +537,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                           MainAxisAlignment.spaceAround,
                                       children: [
                                         Text(
-                                          'Date',
+                                          'Heure',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
                                               .override(
@@ -547,7 +547,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                               ),
                                         ),
                                         Text(
-                                          'Température',
+                                          'Température (°C)',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
                                               .override(
@@ -557,7 +557,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                               ),
                                         ),
                                         Text(
-                                          'TSO',
+                                          'TSO (%)',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
                                               .override(
