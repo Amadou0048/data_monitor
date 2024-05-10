@@ -225,7 +225,10 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                                   .secondaryText,
                                           borderWidth: 1.0,
                                         ),
-                                        axisBounds: const AxisBounds(),
+                                        axisBounds: const AxisBounds(
+                                          minY: 35.0,
+                                          maxY: 39.0,
+                                        ),
                                         xAxisLabelInfo: const AxisLabelInfo(
                                           title: 'Time (ms)',
                                           titleTextStyle: TextStyle(
@@ -240,7 +243,8 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                             fontSize: 14.0,
                                           ),
                                           showLabels: true,
-                                          labelInterval: 10.0,
+                                          labelInterval: 1.0,
+                                          reservedSize: 32.0,
                                         ),
                                       ),
                                     );
@@ -295,6 +299,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                           )
                                         ],
                                         chartStylingInfo: ChartStylingInfo(
+                                          enableTooltip: true,
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .secondaryBackground,
@@ -304,7 +309,10 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                                   .secondaryText,
                                           borderWidth: 1.0,
                                         ),
-                                        axisBounds: const AxisBounds(),
+                                        axisBounds: const AxisBounds(
+                                          minY: 90.0,
+                                          maxY: 100.0,
+                                        ),
                                         xAxisLabelInfo: const AxisLabelInfo(
                                           title: 'Time (ms)',
                                           titleTextStyle: TextStyle(
@@ -319,6 +327,8 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14.0,
                                           ),
+                                          showLabels: true,
+                                          labelInterval: 2.0,
                                           reservedSize: 40.0,
                                         ),
                                       ),
