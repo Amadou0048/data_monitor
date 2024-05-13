@@ -31,26 +31,6 @@ class Esp32controlRecord extends FirestoreRecord {
   String get monitorPhoneNumber => _monitorPhoneNumber ?? '';
   bool hasMonitorPhoneNumber() => _monitorPhoneNumber != null;
 
-  // "minTempThreshold" field.
-  double? _minTempThreshold;
-  double get minTempThreshold => _minTempThreshold ?? 0.0;
-  bool hasMinTempThreshold() => _minTempThreshold != null;
-
-  // "maxTempThreshold" field.
-  double? _maxTempThreshold;
-  double get maxTempThreshold => _maxTempThreshold ?? 0.0;
-  bool hasMaxTempThreshold() => _maxTempThreshold != null;
-
-  // "minTsoThreshold" field.
-  double? _minTsoThreshold;
-  double get minTsoThreshold => _minTsoThreshold ?? 0.0;
-  bool hasMinTsoThreshold() => _minTsoThreshold != null;
-
-  // "maxTsoThreshold" field.
-  double? _maxTsoThreshold;
-  double get maxTsoThreshold => _maxTsoThreshold ?? 0.0;
-  bool hasMaxTsoThreshold() => _maxTsoThreshold != null;
-
   // "hour" field.
   int? _hour;
   int get hour => _hour ?? 0;
@@ -81,20 +61,22 @@ class Esp32controlRecord extends FirestoreRecord {
   int get year => _year ?? 0;
   bool hasYear() => _year != null;
 
+  // "monitorEmail" field.
+  String? _monitorEmail;
+  String get monitorEmail => _monitorEmail ?? '';
+  bool hasMonitorEmail() => _monitorEmail != null;
+
   void _initializeFields() {
     _isMonitoring = snapshotData['isMonitoring'] as bool?;
     _sampleTime = castToType<int>(snapshotData['sampleTime']);
     _monitorPhoneNumber = snapshotData['monitorPhoneNumber'] as String?;
-    _minTempThreshold = castToType<double>(snapshotData['minTempThreshold']);
-    _maxTempThreshold = castToType<double>(snapshotData['maxTempThreshold']);
-    _minTsoThreshold = castToType<double>(snapshotData['minTsoThreshold']);
-    _maxTsoThreshold = castToType<double>(snapshotData['maxTsoThreshold']);
     _hour = castToType<int>(snapshotData['hour']);
     _minute = castToType<int>(snapshotData['minute']);
     _second = castToType<int>(snapshotData['second']);
     _day = castToType<int>(snapshotData['day']);
     _month = castToType<int>(snapshotData['month']);
     _year = castToType<int>(snapshotData['year']);
+    _monitorEmail = snapshotData['monitorEmail'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -135,32 +117,26 @@ Map<String, dynamic> createEsp32controlRecordData({
   bool? isMonitoring,
   int? sampleTime,
   String? monitorPhoneNumber,
-  double? minTempThreshold,
-  double? maxTempThreshold,
-  double? minTsoThreshold,
-  double? maxTsoThreshold,
   int? hour,
   int? minute,
   int? second,
   int? day,
   int? month,
   int? year,
+  String? monitorEmail,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'isMonitoring': isMonitoring,
       'sampleTime': sampleTime,
       'monitorPhoneNumber': monitorPhoneNumber,
-      'minTempThreshold': minTempThreshold,
-      'maxTempThreshold': maxTempThreshold,
-      'minTsoThreshold': minTsoThreshold,
-      'maxTsoThreshold': maxTsoThreshold,
       'hour': hour,
       'minute': minute,
       'second': second,
       'day': day,
       'month': month,
       'year': year,
+      'monitorEmail': monitorEmail,
     }.withoutNulls,
   );
 
@@ -176,16 +152,13 @@ class Esp32controlRecordDocumentEquality
     return e1?.isMonitoring == e2?.isMonitoring &&
         e1?.sampleTime == e2?.sampleTime &&
         e1?.monitorPhoneNumber == e2?.monitorPhoneNumber &&
-        e1?.minTempThreshold == e2?.minTempThreshold &&
-        e1?.maxTempThreshold == e2?.maxTempThreshold &&
-        e1?.minTsoThreshold == e2?.minTsoThreshold &&
-        e1?.maxTsoThreshold == e2?.maxTsoThreshold &&
         e1?.hour == e2?.hour &&
         e1?.minute == e2?.minute &&
         e1?.second == e2?.second &&
         e1?.day == e2?.day &&
         e1?.month == e2?.month &&
-        e1?.year == e2?.year;
+        e1?.year == e2?.year &&
+        e1?.monitorEmail == e2?.monitorEmail;
   }
 
   @override
@@ -193,16 +166,13 @@ class Esp32controlRecordDocumentEquality
         e?.isMonitoring,
         e?.sampleTime,
         e?.monitorPhoneNumber,
-        e?.minTempThreshold,
-        e?.maxTempThreshold,
-        e?.minTsoThreshold,
-        e?.maxTsoThreshold,
         e?.hour,
         e?.minute,
         e?.second,
         e?.day,
         e?.month,
-        e?.year
+        e?.year,
+        e?.monitorEmail
       ]);
 
   @override

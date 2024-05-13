@@ -145,7 +145,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                             ),
                             Text(
                               valueOrDefault<String>(
-                                containerEsp32controlRecord?.monitorPhoneNumber,
+                                containerEsp32controlRecord?.monitorEmail,
                                 'Pas défini',
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -208,6 +208,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
                                               barWidth: 2.0,
+                                              dotData: FlDotData(show: false),
                                             ),
                                           )
                                         ],
@@ -295,6 +296,7 @@ class _SupervisionPageWidgetState extends State<SupervisionPageWidget> {
                                                   FlutterFlowTheme.of(context)
                                                       .error,
                                               barWidth: 2.0,
+                                              dotData: FlDotData(show: false),
                                             ),
                                           )
                                         ],
